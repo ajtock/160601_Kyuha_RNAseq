@@ -1,0 +1,34 @@
+SAMPLES: [
+          "Col_0_RNAseq_Rep1_ERR966157",
+          "Col_0_RNAseq_Rep2_ERR966158",
+          "Col_0_RNAseq_Rep3_ERR966159",
+          "met1_3_RNAseq_Rep1_ERR966160",
+          "met1_3_RNAseq_Rep2_ERR966161",
+          "met1_3_RNAseq_Rep3_ERR966162"
+         ]
+THREADS: 48
+MEMORY: "200g"
+FILTER:
+  fastqc:
+      contaminants: "adapters/contaminants_list_fastqc.txt"
+  bbduk:
+      kmerSize: 18
+      rRNAfasta: "contaminants/ribokmers.fa.gz"
+  trimmomatic:
+      ILLUMINACLIP: "ILLUMINACLIP:adapters/cat_all_and_TruSeq_Single_Indexes.fa:2:30:10:1:true"
+      SLIDINGWINDOW: "SLIDINGWINDOW:4:15"
+      MINLEN: "MINLEN:36"
+MAPPING:
+      reference: "data/index/t2t-col.20210610"
+      alignments: 100 # STAR option --outFilterMultimapNmax
+      anchor: 100 # STAR option --winAnchorMultimapNmax
+      mismatches: 2  # STAR option --outFilterMismatchNmax
+      MAPQboth: 3
+      MAPQunique: 255
+      sortMemory: "5G"
+COVERAGE:
+      normalizeUsing: "BPM"
+      ignoreForNormalization: "ChrM ChrC" # Reference genome-specific parameter
+      binSize: 1
+      genomeBinSize: 10000
+      genomeBinName: "10kb"
